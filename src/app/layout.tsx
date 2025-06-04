@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "@/components/ClientProvider";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="py-2 flex justify-center gap-10">
+          <Link href={"/"}>Accueill</Link>
+          <Link href={"/favorites"}>Favories</Link>
+        </header>
         <ClientProvider>{children}</ClientProvider>
       </body>
     </html>

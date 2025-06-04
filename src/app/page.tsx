@@ -1,10 +1,15 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import Card from "@/components/card";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function Home() {
+const Client = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["countries"],
     queryFn: () =>
@@ -57,8 +62,8 @@ export default function Home() {
   });
 
   return (
-    <main className="bg-slate-800 min-h-screen text-white">
-      <div className="text-center py-6">
+    <main className="min-h-screen text-white">
+      <div className="text-center py-6 bg-slate-800">
         <h1 className="text-3xl font-bold mb-4">World Explorer</h1>
         <input
           type="text"
@@ -148,32 +153,18 @@ export default function Home() {
           countries
             .slice(0, maxCountries)
             .map((country: any, index: number) => (
-              <div
-                key={index}
-                className="bg-white text-black rounded-xl overflow-hidden shadow p-4"
-              >
-                <Image
-                  src={country.flag}
-                  alt={`Drapeau de ${country.name}`}
-                  width={300}
-                  height={200}
-                  className="w-full h-40 object-cover"
-                />
-                <h2 className="text-lg font-bold mt-2">{country.name}</h2>
-                <p>
-                  <strong>Capitale:</strong> {country.capital}
-                </p>
-                <p>
-                  <strong>Population:</strong>{" "}
-                  {country.population.toLocaleString()}
-                </p>
-                <p>
-                  <strong>Région:</strong> {country.region}
-                </p>
-              </div>
+              <Card key={index} {...country} />
             ))
         )}
       </div>
     </main>
+  );
+};
+
+export default function Home() {
+  return (
+    <QueryClientProvider client={new QueryClient()}>
+      <Client />
+    </QueryClientProvider>
   );
 }
